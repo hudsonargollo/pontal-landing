@@ -219,4 +219,12 @@ export const translations = {
   },
 } as const;
 
-export type Translations = typeof translations.pt;
+type DeepReadonlyToString<T> = T extends string
+  ? string
+  : T extends readonly (infer U)[]
+    ? readonly DeepReadonlyToString<U>[]
+    : T extends object
+      ? { readonly [K in keyof T]: DeepReadonlyToString<T[K]> }
+      : T;
+
+export type Translations = DeepReadonlyToString<typeof translations.pt>;
